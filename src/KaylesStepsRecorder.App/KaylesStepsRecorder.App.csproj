@@ -7,7 +7,6 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>KaylesStepsRecorder.App</RootNamespace>
     <AssemblyName>KaylesStepsRecorder</AssemblyName>
-    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
