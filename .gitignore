@@ -1,0 +1,64 @@
+# .NET build output
+bin/
+obj/
+out/
+publish/
+*.user
+*.suo
+
+# Visual Studio
+.vs/
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+
+# Publish profiles (may contain secrets)
+PublishProfiles/
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Logs
+*.log
+logs/
+
+# Session data (local runtime artifacts)
+Sessions/
+*.lock
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# JetBrains
+.idea/
+
+# Rider build
+_ReSharper.Caches/
