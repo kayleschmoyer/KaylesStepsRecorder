@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>KaylesStepsRecorder.Engine</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KaylesStepsRecorder.Core\KaylesStepsRecorder.Core.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Hooks\KaylesStepsRecorder.Hooks.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Capture\KaylesStepsRecorder.Capture.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Automation\KaylesStepsRecorder.Automation.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Storage\KaylesStepsRecorder.Storage.csproj" />
+  </ItemGroup>
+</Project>
