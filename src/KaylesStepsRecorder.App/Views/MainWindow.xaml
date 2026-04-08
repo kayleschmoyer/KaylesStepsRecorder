@@ -1,0 +1,90 @@
+<Window x:Class="KaylesStepsRecorder.App.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:KaylesStepsRecorder.App.Converters"
+        xmlns:views="clr-namespace:KaylesStepsRecorder.App.Views"
+        Title="Kayle's Steps Recorder"
+        Height="780" Width="1280"
+        MinHeight="600" MinWidth="1000"
+        Background="{DynamicResource BackgroundBrush}"
+        WindowStartupLocation="CenterScreen"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True">
+
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <conv:NullToVisibilityConverter x:Key="NotNullToVis"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+            <DockPanel Margin="16,24">
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Text="KAYLE'S" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" FontWeight="SemiBold" Margin="4,0,0,0"/>
+                    <TextBlock Text="Steps Recorder" FontSize="18" FontWeight="Bold" Margin="4,2,0,24"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                    <Button Style="{StaticResource NavButton}" Command="{Binding NavigateHomeCommand}">
+                        <TextBlock Text="&#x2302;  Home"/>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Command="{Binding NavigateRecordingCommand}">
+                        <TextBlock Text="&#x25CF;  Record"/>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Command="{Binding NavigateReviewCommand}">
+                        <TextBlock Text="&#x270E;  Review &amp; Edit"/>
+                    </Button>
+                    <Button Style="{StaticResource NavButton}" Command="{Binding NavigateExportCommand}">
+                        <TextBlock Text="&#x2B07;  Export"/>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Bottom">
+                    <Button Style="{StaticResource NavButton}" Command="{Binding NavigateSettingsCommand}">
+                        <TextBlock Text="&#x2699;  Settings"/>
+                    </Button>
+                    <TextBlock Text="v1.0.0" Style="{StaticResource MutedText}" Margin="20,8,0,0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Main content -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Recovery banner -->
+            <Border Grid.Row="0" Background="{DynamicResource WarningBrush}" Padding="20,12"
+                    Visibility="{Binding RecoveryBanner, Converter={StaticResource NotNullToVis}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding RecoveryBanner}" Foreground="White" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1" Content="Restore" Margin="12,0,8,0" Style="{StaticResource SecondaryButton}"
+                            Command="{Binding RestoreRecoveryCommand}"/>
+                    <Button Grid.Column="2" Content="Dismiss" Style="{StaticResource SecondaryButton}"
+                            Command="{Binding DismissRecoveryCommand}"/>
+                </Grid>
+            </Border>
+
+            <!-- Page views -->
+            <Grid Grid.Row="1">
+                <views:HomeView DataContext="{Binding}" Visibility="{Binding IsHome, Converter={StaticResource BoolToVis}}"/>
+                <views:RecordingView DataContext="{Binding Recording}" Visibility="{Binding DataContext.IsRecording, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVis}}"/>
+                <views:StepEditorView DataContext="{Binding Editor}" Visibility="{Binding DataContext.IsReview, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVis}}"/>
+                <views:ExportView DataContext="{Binding Export}" Visibility="{Binding DataContext.IsExport, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVis}}"/>
+                <views:SettingsView DataContext="{Binding Settings}" Visibility="{Binding DataContext.IsSettings, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVis}}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

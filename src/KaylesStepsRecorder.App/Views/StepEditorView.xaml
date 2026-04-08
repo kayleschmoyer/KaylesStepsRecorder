@@ -1,0 +1,134 @@
+<UserControl x:Class="KaylesStepsRecorder.App.Views.StepEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:KaylesStepsRecorder.App.Converters">
+    <UserControl.Resources>
+        <conv:PathToImageSourceConverter x:Key="PathToImg"/>
+        <conv:NullToVisibilityConverter x:Key="NotNullVis"/>
+    </UserControl.Resources>
+
+    <Grid Margin="40,32">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="16"/>
+            <ColumnDefinition Width="360"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3">
+            <TextBlock Text="Review &amp; edit" Style="{StaticResource HeaderText}"/>
+            <TextBlock Text="Clean up the steps before exporting. Rename, reorder, drop, flag." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Step list -->
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource Card}" Margin="0,24,0,0">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,12">
+                    <Button Content="&#x25B2; Up" Style="{StaticResource IconButton}" Command="{Binding MoveUpCommand}" Margin="0,0,8,0"/>
+                    <Button Content="&#x25BC; Down" Style="{StaticResource IconButton}" Command="{Binding MoveDownCommand}" Margin="0,0,8,0"/>
+                    <Button Content="&#x2605; Important" Style="{StaticResource IconButton}" Command="{Binding MarkImportantCommand}" Margin="0,0,8,0"/>
+                    <Button Content="&#x1F41B; Bug" Style="{StaticResource IconButton}" Command="{Binding MarkBugCommand}" Margin="0,0,8,0"/>
+                    <Button Content="&#x2716; Delete" Style="{StaticResource DangerButton}" Command="{Binding DeleteStepCommand}" Padding="12,8" FontSize="12"/>
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Steps}" SelectedItem="{Binding SelectedStep}"
+                         HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,0,0,10"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{DynamicResource SurfaceElevatedBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1" CornerRadius="8" Padding="12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Background="{DynamicResource AccentBrush}" Width="32" Height="32" CornerRadius="16" Margin="0,0,12,0">
+                                        <TextBlock Text="{Binding StepNumber}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="1" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" ClipToBounds="True">
+                                        <Image Source="{Binding ThumbnailPath, Converter={StaticResource PathToImg}}" Stretch="UniformToFill" Height="64"/>
+                                    </Border>
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="12,0,0,0">
+                                        <TextBlock Text="{Binding Description}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding TimestampText}" Style="{StaticResource MutedText}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Border Padding="6,3" CornerRadius="10" Background="{DynamicResource WarningBrush}" Margin="4,0,0,0"
+                                                Visibility="{Binding IsImportant, Converter={StaticResource NotNullVis}}">
+                                            <TextBlock Text="!" Foreground="White" FontWeight="Bold" FontSize="10"/>
+                                        </Border>
+                                        <Border Padding="6,3" CornerRadius="10" Background="{DynamicResource DangerBrush}" Margin="4,0,0,0"
+                                                Visibility="{Binding IsBug, Converter={StaticResource NotNullVis}}">
+                                            <TextBlock Text="BUG" Foreground="White" FontWeight="Bold" FontSize="10"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <!-- Inspector panel -->
+        <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource Card}" Margin="0,24,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="INSPECTOR" Style="{StaticResource MutedText}"/>
+
+                    <StackPanel Visibility="{Binding SelectedStep, Converter={StaticResource NotNullVis}}">
+                        <TextBlock Text="Description" Style="{StaticResource SubheaderText}" Margin="0,16,0,6"/>
+                        <TextBox Text="{Binding SelectedStep.Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="60"/>
+
+                        <TextBlock Text="Note" Style="{StaticResource SubheaderText}" Margin="0,16,0,6"/>
+                        <TextBox Text="{Binding SelectedStep.UserNote, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="80"/>
+
+                        <TextBlock Text="Flags" Style="{StaticResource SubheaderText}" Margin="0,16,0,6"/>
+                        <CheckBox Content="Important" IsChecked="{Binding SelectedStep.IsImportant}" Margin="0,0,0,6"/>
+                        <CheckBox Content="Bug" IsChecked="{Binding SelectedStep.IsBug}" Margin="0,0,0,6"/>
+                        <CheckBox Content="Expected result" IsChecked="{Binding SelectedStep.IsExpectedResult}" Margin="0,0,0,6"/>
+                        <CheckBox Content="Actual result" IsChecked="{Binding SelectedStep.IsActualResult}" Margin="0,0,0,6"/>
+                        <CheckBox Content="Redact screenshot" IsChecked="{Binding SelectedStep.IsRedacted}" Margin="0,0,0,6"/>
+                    </StackPanel>
+
+                    <TextBlock Visibility="{Binding SelectedStep, Converter={StaticResource NotNullVis}, ConverterParameter=invert}"
+                               Text="Select a step to edit its details." Foreground="{DynamicResource TextMutedBrush}" FontStyle="Italic" Margin="0,16,0,0"/>
+
+                    <!-- Session metadata -->
+                    <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Margin="0,24,0,0" Padding="0,16,0,0">
+                        <StackPanel>
+                            <TextBlock Text="SESSION METADATA" Style="{StaticResource MutedText}"/>
+                            <TextBlock Text="Bug title" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                            <TextBox Text="{Binding Metadata.BugTitle, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Application under test" Style="{StaticResource SubheaderText}" Margin="0,10,0,6"/>
+                            <TextBox Text="{Binding Metadata.ApplicationUnderTest, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Build / version" Style="{StaticResource SubheaderText}" Margin="0,10,0,6"/>
+                            <TextBox Text="{Binding Metadata.BuildVersion, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Tester" Style="{StaticResource SubheaderText}" Margin="0,10,0,6"/>
+                            <TextBox Text="{Binding Metadata.TesterName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Environment" Style="{StaticResource SubheaderText}" Margin="0,10,0,6"/>
+                            <TextBox Text="{Binding Metadata.TestEnvironment, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Expected result" Style="{StaticResource SubheaderText}" Margin="0,10,0,6"/>
+                            <TextBox Text="{Binding Metadata.ExpectedResult, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="50"/>
+                            <TextBlock Text="Actual result" Style="{StaticResource SubheaderText}" Margin="0,10,0,6"/>
+                            <TextBox Text="{Binding Metadata.ActualResult, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="50"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

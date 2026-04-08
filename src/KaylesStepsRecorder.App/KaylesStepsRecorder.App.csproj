@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>KaylesStepsRecorder.App</RootNamespace>
+    <AssemblyName>KaylesStepsRecorder</AssemblyName>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KaylesStepsRecorder.Core\KaylesStepsRecorder.Core.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Engine\KaylesStepsRecorder.Engine.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Storage\KaylesStepsRecorder.Storage.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Export\KaylesStepsRecorder.Export.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Capture\KaylesStepsRecorder.Capture.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Hooks\KaylesStepsRecorder.Hooks.csproj" />
+    <ProjectReference Include="..\KaylesStepsRecorder.Automation\KaylesStepsRecorder.Automation.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
+  </ItemGroup>
+</Project>

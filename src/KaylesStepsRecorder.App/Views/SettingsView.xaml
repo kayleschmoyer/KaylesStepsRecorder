@@ -1,0 +1,85 @@
+<UserControl x:Class="KaylesStepsRecorder.App.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="40,32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Settings" Style="{StaticResource HeaderText}"/>
+            <TextBlock Text="Customize recording and export behavior." Foreground="{DynamicResource TextSecondaryBrush}" FontSize="13" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,24,0,0">
+            <StackPanel MaxWidth="600">
+                <!-- Recording -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="RECORDING" Style="{StaticResource MutedText}"/>
+
+                        <TextBlock Text="Capture delay (ms)" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding CaptureDelayMs, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Wait this long after a click before taking the screenshot (50-500ms recommended)." Style="{StaticResource MutedText}" Margin="0,4,0,0"/>
+
+                        <TextBlock Text="Debounce interval (ms)" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding DebounceIntervalMs, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Suppress duplicate click/key events within this window." Style="{StaticResource MutedText}" Margin="0,4,0,0"/>
+
+                        <CheckBox Content="Show click highlight on screenshots" IsChecked="{Binding ShowClickHighlight}" Margin="0,12,0,0"/>
+                        <TextBlock Text="Click highlight radius (pixels)" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding ClickHighlightRadius, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <CheckBox Content="Capture keyboard shortcuts (Ctrl+S, etc.)" IsChecked="{Binding CaptureKeyboardShortcuts}" Margin="0,12,0,0"/>
+                        <CheckBox Content="Capture text entry" IsChecked="{Binding CaptureTextEntry}" Margin="0,6,0,0"/>
+                        <CheckBox Content="Capture scroll events" IsChecked="{Binding CaptureScrollEvents}" Margin="0,6,0,0"/>
+
+                        <TextBlock Text="Excluded processes (comma-separated)" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding ExcludedProcessesText, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="40"/>
+                        <CheckBox Content="Auto-pause on excluded apps" IsChecked="{Binding PauseOnExcludedApp}" Margin="0,12,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Autosave -->
+                <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="AUTOSAVE" Style="{StaticResource MutedText}"/>
+
+                        <CheckBox Content="Enable autosave" IsChecked="{Binding AutoSaveEnabled}" Margin="0,12,0,0"/>
+                        <TextBlock Text="Autosave interval (seconds)" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding AutoSaveIntervalSeconds, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Export -->
+                <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="EXPORT" Style="{StaticResource MutedText}"/>
+
+                        <TextBlock Text="Default tester name" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding DefaultTesterName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="Default environment" Style="{StaticResource SubheaderText}" Margin="0,12,0,6"/>
+                        <TextBox Text="{Binding DefaultEnvironment, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- UI -->
+                <Border Style="{StaticResource Card}" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="USER INTERFACE" Style="{StaticResource MutedText}"/>
+
+                        <CheckBox Content="Dark mode" IsChecked="{Binding DarkMode}" Margin="0,12,0,0"/>
+                        <CheckBox Content="Minimize app when recording starts" IsChecked="{Binding MinimizeOnRecord}" Margin="0,6,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Save button -->
+                <Button Content="Save settings" Style="{StaticResource PrimaryButton}" Command="{Binding SaveCommand}"
+                        Margin="0,24,0,32" Padding="28,12" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
